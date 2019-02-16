@@ -5,7 +5,7 @@ describe("UPDATE operation of records", () => {
   let user;
 
   beforeEach(async () => {
-    user = new User({ name: "Ashish" });
+    user = new User({ name: "Ashish", likes: 0 });
     await user.save();
   });
 
@@ -55,5 +55,14 @@ describe("UPDATE operation of records", () => {
     const users = await User.find({});
     assert(users.length === 1);
     assert(users[0].name === "Anand");
+  });
+
+  /**
+   * Operators
+   */
+  it("increments post count by 1", async () => {
+    await User.update({ name: "Ashish" }, { $inc: { likes: 1 } });
+    const foundUser = await User.findOne({ name: "Ashish" });
+    assert(foundUser.likes === 1);
   });
 });
