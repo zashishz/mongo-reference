@@ -10,7 +10,7 @@ describe("REMOVE operation of records", () => {
   });
 
   it("performs model instance remove", async () => {
-    await user.remove();
+    await user.delete();
     const foundUsers = await User.findById(user._id);
     assert(foundUsers === null);
   });

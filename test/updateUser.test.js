@@ -61,7 +61,7 @@ describe("UPDATE operation of records", () => {
    * Operators
    */
   it("increments post count by 1", async () => {
-    await User.update({ name: "Ashish" }, { $inc: { likes: 1 } });
+    await User.updateOne({ name: "Ashish" }, { $inc: { likes: 1 } });
     const foundUser = await User.findOne({ name: "Ashish" });
     assert(foundUser.likes === 1);
   });

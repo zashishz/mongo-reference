@@ -13,11 +13,21 @@ const UserSchema = new Schema({
     required: [true, "Name is required"]
   },
   likes: Number,
-  posts: [PostSchema]
+  posts: [PostSchema],
+  blogPosts: [{ type: Schema.Types.ObjectId, ref: "blogPost" }]
 });
 
 UserSchema.virtual("postCount").get(function() {
   return this.posts.length;
+});
+
+/**
+ * Middleware - save, validate, init & remove
+ */
+UserSchema.pre("remove", async function(next) {
+  const BlogPost = mongoose.model("blogPost");
+  await BlogPost.deleteMany({ _id: { $in: this.blogPosts } });
+  next();
 });
 
 const User = mongoose.model("user", UserSchema);
